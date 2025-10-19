@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Project Management Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+        .modal-backdrop {
+            backdrop-filter: blur(4px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Login Page -->
+    <div id="loginPage" class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8">
+            <div class="text-center">
+                <div class="mx-auto h-16 w-16 bg-blue-600 rounded-xl flex items-center justify-center mb-4">
+                    <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-900">TaskFlow</h2>
+                <p class="mt-2 text-sm text-gray-600">Sign in to your workspace</p>
+            </div>
+            <form class="mt-8 space-y-6" onsubmit="handleLogin(event)">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email address</label>
+                        <input type="email" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter your email">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <input type="password" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter your password">
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center">
+                        <input type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        <span class="ml-2 text-sm text-gray-600">Remember me</span>
+                    </label>
+                    <a href="#" class="text-sm text-blue-600 hover:text-blue-500">Forgot password?</a>
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200">
+                    Sign in
+                </button>
+                <div class="text-center">
+                    <span class="text-sm text-gray-600">Don't have an account? </span>
+                    <button type="button" onclick="showSignUp()" class="text-sm text-blue-600 hover:text-blue-500 font-medium">Sign up</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sign Up Page -->
+    <div id="signUpPage" class="hidden min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8">
+            <div class="text-center">
+                <div class="mx-auto h-16 w-16 bg-blue-600 rounded-xl flex items-center justify-center mb-4">
+                    <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-900">Join TaskFlow</h2>
+                <p class="mt-2 text-sm text-gray-600">Create your account to get started</p>
+            </div>
+            <form class="mt-8 space-y-6" onsubmit="handleSignUp(event)">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                        <input type="text" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter your full name">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email address</label>
+                        <input type="email" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter your email">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <input type="password" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Create a password">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                        <input type="password" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Confirm your password">
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" required class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                    <span class="ml-2 text-sm text-gray-600">I agree to the <a href="#" class="text-blue-600 hover:text-blue-500">Terms of Service</a> and <a href="#" class="text-blue-600 hover:text-blue-500">Privacy Policy</a></span>
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200">
+                    Create Account
+                </button>
+                <div class="text-center">
+                    <span class="text-sm text-gray-600">Already have an account? </span>
+                    <button type="button" onclick="showLogin()" class="text-sm text-blue-600 hover:text-blue-500 font-medium">Sign in</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="hidden min-h-full">
+        <!-- Navigation Header -->
+        <nav class="bg-white shadow-sm border-b border-gray-200">
+            <div class="px-6 py-3">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                            <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                        </div>
+                        <h1 class="text-xl font-semibold text-gray-900">TaskFlow</h1>
+                        <div class="hidden md:flex space-x-6 ml-8">
+                            <button onclick="showPage('dashboard')" class="nav-btn text-blue-600 border-b-2 border-blue-600 pb-3 px-1 text-sm font-medium">Dashboard</button>
+                            <button onclick="showPage('projects')" class="nav-btn text-gray-500 hover:text-gray-700 pb-3 px-1 text-sm font-medium">Projects</button>
+                            <button onclick="showPage('tasks')" class="nav-btn text-gray-500 hover:text-gray-700 pb-3 px-1 text-sm font-medium">Tasks</button>
+                            <button onclick="showPage('team')" class="nav-btn text-gray-500 hover:text-gray-700 pb-3 px-1 text-sm font-medium">Team</button>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button class="p-2 text-gray-400 hover:text-gray-600 rounded-lg">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6l-6-6v6z"></path>
+                            </svg>
+                        </button>
+                        <div class="h-8 w-8 bg-gray-300 rounded-full flex items-center justify-center">
+                            <span class="text-sm font-medium text-gray-700">JD</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Dashboard Page -->
+        <div id="dashboardPage" class="page-content">
+            <div class="p-6">
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900">Welcome back, John!</h2>
+                    <p class="text-gray-600">Here's what's happening with your projects today.</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-blue-100 rounded-lg">
+                                <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Total Projects</p>
+                                <p class="text-2xl font-bold text-gray-900">12</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-green-100 rounded-lg">
+                                <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Completed Tasks</p>
+                                <p class="text-2xl font-bold text-gray-900">47</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-yellow-100 rounded-lg">
+                                <svg class="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">In Progress</p>
+                                <p class="text-2xl font-bold text-gray-900">23</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-red-100 rounded-lg">
+                                <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-medium text-gray-600">Overdue</p>
+                                <p class="text-2xl font-bold text-gray-900">5</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Projects and Tasks -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                        <div class="p-6 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-900">Recent Projects</h3>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Website Redesign</h4>
+                                    <p class="text-sm text-gray-600">8 tasks remaining</p>
+                                </div>
+                                <div class="w-16 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-blue-600 h-2 rounded-full" style="width: 75%"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Mobile App</h4>
+                                    <p class="text-sm text-gray-600">12 tasks remaining</p>
+                                </div>
+                                <div class="w-16 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-green-600 h-2 rounded-full" style="width: 45%"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div>
+                                    <h4 class="font-medium text-gray-900">API Integration</h4>
+                                    <p class="text-sm text-gray-600">3 tasks remaining</p>
+                                </div>
+                                <div class="w-16 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-yellow-600 h-2 rounded-full" style="width: 90%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                        <div class="p-6 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-900">My Tasks</h3>
+                        </div>
+                        <div class="p-6 space-y-3">
+                            <div class="flex items-center space-x-3 p-3 hover:bg-gray-50 rounded-lg">
+                                <input type="checkbox" class="h-4 w-4 text-blue-600 rounded">
+                                <div class="flex-1">
+                                    <p class="font-medium text-gray-900">Update user dashboard</p>
+                                    <p class="text-sm text-gray-600">Due today</p>
+                                </div>
+                                <span class="px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full">High</span>
+                            </div>
+                            <div class="flex items-center space-x-3 p-3 hover:bg-gray-50 rounded-lg">
+                                <input type="checkbox" class="h-4 w-4 text-blue-600 rounded">
+                                <div class="flex-1">
+                                    <p class="font-medium text-gray-900">Review pull requests</p>
+                                    <p class="text-sm text-gray-600">Due tomorrow</p>
+                                </div>
+                                <span class="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">Medium</span>
+                            </div>
+                            <div class="flex items-center space-x-3 p-3 hover:bg-gray-50 rounded-lg">
+                                <input type="checkbox" checked class="h-4 w-4 text-blue-600 rounded">
+                                <div class="flex-1">
+                                    <p class="font-medium text-gray-900 line-through">Setup CI/CD pipeline</p>
+                                    <p class="text-sm text-gray-600">Completed</p>
+                                </div>
+                                <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Done</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects Page -->
+        <div id="projectsPage" class="page-content hidden">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900">Projects</h2>
+                        <p class="text-gray-600">Manage and track all your projects</p>
+                    </div>
+                    <button onclick="openCreateProjectModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        <span>New Project</span>
+                    </button>
+                </div>
+
+                <!-- Project Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-semibold text-gray-900">Website Redesign</h3>
+                                <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+                            </div>
+                            <p class="text-gray-600 mb-4">Complete overhaul of the company website with modern design and improved UX.</p>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex -space-x-2">
+                                    <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm">J</div>
+                                    <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm">S</div>
+                                    <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm">M</div>
+                                </div>
+                                <span class="text-sm text-gray-600">8 tasks</span>
+                            </div>
+                            <div class="mb-4">
+                                <div class="flex justify-between text-sm text-gray-600 mb-1">
+                                    <span>Progress</span>
+                                    <span>75%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-blue-600 h-2 rounded-full" style="width: 75%"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between text-sm text-gray-600">
+                                <span>Due: Dec 15, 2024</span>
+                                <span class="text-green-600 font-medium">On Track</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-semibold text-gray-900">Mobile App Development</h3>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <p class="text-gray-600 mb-4">Native mobile application for iOS and Android platforms.</p>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex -space-x-2">
+                                    <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white text-sm">A</div>
+                                    <div class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-white text-sm">B</div>
+                                </div>
+                                <span class="text-sm text-gray-600">12 tasks</span>
+                            </div>
+                            <div class="mb-4">
+                                <div class="flex justify-between text-sm text-gray-600 mb-1">
+                                    <span>Progress</span>
+                                    <span>45%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-green-600 h-2 rounded-full" style="width: 45%"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between text-sm text-gray-600">
+                                <span>Due: Jan 30, 2025</span>
+                                <span class="text-yellow-600 font-medium">At Risk</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-semibold text-gray-900">API Integration</h3>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            </div>
+                            <p class="text-gray-600 mb-4">Integration with third-party APIs and services for enhanced functionality.</p>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex -space-x-2">
+                                    <div class="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white text-sm">C</div>
+                                    <div class="w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center text-white text-sm">D</div>
+                                    <div class="w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center text-white text-sm">E</div>
+                                </div>
+                                <span class="text-sm text-gray-600">3 tasks</span>
+                            </div>
+                            <div class="mb-4">
+                                <div class="flex justify-between text-sm text-gray-600 mb-1">
+                                    <span>Progress</span>
+                                    <span>90%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-yellow-600 h-2 rounded-full" style="width: 90%"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between text-sm text-gray-600">
+                                <span>Due: Nov 25, 2024</span>
+                                <span class="text-green-600 font-medium">On Track</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tasks Page -->
+        <div id="tasksPage" class="page-content hidden">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900">Tasks</h2>
+                        <p class="text-gray-600">Track and manage all your tasks</p>
+                    </div>
+                    <div class="flex space-x-3">
+                        <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                            <option>All Projects</option>
+                            <option>Website Redesign</option>
+                            <option>Mobile App</option>
+                            <option>API Integration</option>
+                        </select>
+                        <button onclick="openCreateTaskModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            <span>New Task</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Kanban Board -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- To Do Column -->
+                    <div class="bg-gray-100 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-semibold text-gray-900">To Do</h3>
+                            <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-sm">5</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-shadow">
+                                <h4 class="font-medium text-gray-900 mb-2">Design new homepage layout</h4>
+                                <p class="text-sm text-gray-600 mb-3">Create wireframes and mockups for the new homepage design</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full">High</span>
+                                    <div class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs">J</div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-shadow">
+                                <h4 class="font-medium text-gray-900 mb-2">Setup development environment</h4>
+                                <p class="text-sm text-gray-600 mb-3">Configure local development setup for the new project</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">Medium</span>
+                                    <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">S</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- In Progress Column -->
+                    <div class="bg-blue-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-semibold text-gray-900">In Progress</h3>
+                            <span class="bg-blue-200 text-blue-700 px-2 py-1 rounded-full text-sm">3</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-shadow">
+                                <h4 class="font-medium text-gray-900 mb-2">Implement user authentication</h4>
+                                <p class="text-sm text-gray-600 mb-3">Add login and registration functionality</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full">High</span>
+                                    <div class="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-white text-xs">M</div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-shadow">
+                                <h4 class="font-medium text-gray-900 mb-2">Database schema design</h4>
+                                <p class="text-sm text-gray-600 mb-3">Design and implement the database structure</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">Medium</span>
+                                    <div class="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-white text-xs">A</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Done Column -->
+                    <div class="bg-green-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-semibold text-gray-900">Done</h3>
+                            <span class="bg-green-200 text-green-700 px-2 py-1 rounded-full text-sm">8</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-shadow opacity-75">
+                                <h4 class="font-medium text-gray-900 mb-2">Project setup and initialization</h4>
+                                <p class="text-sm text-gray-600 mb-3">Initialize project repository and basic structure</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Done</span>
+                                    <div class="w-6 h-6 bg-yellow-500 rounded-full flex items-center justify-center text-white text-xs">B</div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-shadow opacity-75">
+                                <h4 class="font-medium text-gray-900 mb-2">Requirements gathering</h4>
+                                <p class="text-sm text-gray-600 mb-3">Collect and document project requirements</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Done</span>
+                                    <div class="w-6 h-6 bg-indigo-500 rounded-full flex items-center justify-center text-white text-xs">C</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Page -->
+        <div id="teamPage" class="page-content hidden">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900">Team</h2>
+                        <p class="text-gray-600">Manage your team members and their roles</p>
+                    </div>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        <span>Invite Member</span>
+                    </button>
+                </div>
+
+                <!-- Team Members Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <div class="flex items-center space-x-4 mb-4">
+                            <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">JD</div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">John Doe</h3>
+                                <p class="text-sm text-gray-600">Project Manager</p>
+                            </div>
+                        </div>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Active Tasks</span>
+                                <span class="font-medium">8</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Completed</span>
+                                <span class="font-medium">24</span>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="flex-1 bg-gray-100 text-gray-700 py-2 px-3 rounded-lg text-sm hover:bg-gray-200">View Profile</button>
+                            <button class="flex-1 bg-blue-600 text-white py-2 px-3 rounded-lg text-sm hover:bg-blue-700">Message</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <div class="flex items-center space-x-4 mb-4">
+                            <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-semibold">SM</div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Sarah Miller</h3>
+                                <p class="text-sm text-gray-600">UI/UX Designer</p>
+                            </div>
+                        </div>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Active Tasks</span>
+                                <span class="font-medium">5</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Completed</span>
+                                <span class="font-medium">18</span>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="flex-1 bg-gray-100 text-gray-700 py-2 px-3 rounded-lg text-sm hover:bg-gray-200">View Profile</button>
+                            <button class="flex-1 bg-blue-600 text-white py-2 px-3 rounded-lg text-sm hover:bg-blue-700">Message</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <div class="flex items-center space-x-4 mb-4">
+                            <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white font-semibold">MJ</div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Mike Johnson</h3>
+                                <p class="text-sm text-gray-600">Frontend Developer</p>
+                            </div>
+                        </div>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Active Tasks</span>
+                                <span class="font-medium">6</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Completed</span>
+                                <span class="font-medium">31</span>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="flex-1 bg-gray-100 text-gray-700 py-2 px-3 rounded-lg text-sm hover:bg-gray-200">View Profile</button>
+                            <button class="flex-1 bg-blue-600 text-white py-2 px-3 rounded-lg text-sm hover:bg-blue-700">Message</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Project Modal -->
+    <div id="createProjectModal" class="hidden fixed inset-0 bg-black bg-opacity-50 modal-backdrop flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4 fade-in">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-900">Create New Project</h3>
+                <button onclick="closeCreateProjectModal()" class="text-gray-400 hover:text-gray-600">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <form onsubmit="createProject(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Project Name</label>
+                    <input type="text" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter project name">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                    <textarea rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Project description"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
+                    <input type="date" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="flex space-x-3 pt-4">
+                    <button type="button" onclick="closeCreateProjectModal()" class="flex-1 bg-gray-200 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-300">Cancel</button>
+                    <button type="submit" class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">Create Project</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create Task Modal -->
+    <div id="createTaskModal" class="hidden fixed inset-0 bg-black bg-opacity-50 modal-backdrop flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4 fade-in">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-900">Create New Task</h3>
+                <button onclick="closeCreateTaskModal()" class="text-gray-400 hover:text-gray-600">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <form onsubmit="createTask(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Task Title</label>
+                    <input type="text" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter task title">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                    <textarea rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Task description"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Project</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option>Website Redesign</option>
+                        <option>Mobile App</option>
+                        <option>API Integration</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Priority</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option>Low</option>
+                        <option>Medium</option>
+                        <option>High</option>
+                    </select>
+                </div>
+                <div class="flex space-x-3 pt-4">
+                    <button type="button" onclick="closeCreateTaskModal()" class="flex-1 bg-gray-200 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-300">Cancel</button>
+                    <button type="submit" class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">Create Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Data storage
+        let userData = JSON.parse(localStorage.getItem('taskflowUsers')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('taskflowCurrentUser')) || null;
+        let projectsData = JSON.parse(localStorage.getItem('taskflowProjects')) || [
+            {
+                id: 1,
+                name: 'Website Redesign',
+                description: 'Complete overhaul of the company website with modern design and improved UX.',
+                progress: 75,
+                tasks: 8,
+                dueDate: '2024-12-15',
+                status: 'On Track',
+                color: 'blue',
+                members: ['JD', 'SM', 'MJ']
+            },
+            {
+                id: 2,
+                name: 'Mobile App Development',
+                description: 'Native mobile application for iOS and Android platforms.',
+                progress: 45,
+                tasks: 12,
+                dueDate: '2025-01-30',
+                status: 'At Risk',
+                color: 'green',
+                members: ['AB', 'CD']
+            },
+            {
+                id: 3,
+                name: 'API Integration',
+                description: 'Integration with third-party APIs and services for enhanced functionality.',
+                progress: 90,
+                tasks: 3,
+                dueDate: '2024-11-25',
+                status: 'On Track',
+                color: 'yellow',
+                members: ['EF', 'GH', 'IJ']
+            }
+        ];
+        let tasksData = JSON.parse(localStorage.getItem('taskflowTasks')) || [
+            {
+                id: 1,
+                title: 'Design new homepage layout',
+                description: 'Create wireframes and mockups for the new homepage design',
+                priority: 'High',
+                status: 'todo',
+                assignee: 'JD',
+                project: 'Website Redesign'
+            },
+            {
+                id: 2,
+                title: 'Setup development environment',
+                description: 'Configure local development setup for the new project',
+                priority: 'Medium',
+                status: 'todo',
+                assignee: 'SM',
+                project: 'Website Redesign'
+            },
+            {
+                id: 3,
+                title: 'Implement user authentication',
+                description: 'Add login and registration functionality',
+                priority: 'High',
+                status: 'inprogress',
+                assignee: 'MJ',
+                project: 'Website Redesign'
+            },
+            {
+                id: 4,
+                title: 'Database schema design',
+                description: 'Design and implement the database structure',
+                priority: 'Medium',
+                status: 'inprogress',
+                assignee: 'AB',
+                project: 'Mobile App Development'
+            },
+            {
+                id: 5,
+                title: 'Project setup and initialization',
+                description: 'Initialize project repository and basic structure',
+                priority: 'Done',
+                status: 'done',
+                assignee: 'CD',
+                project: 'API Integration'
+            },
+            {
+                id: 6,
+                title: 'Requirements gathering',
+                description: 'Collect and document project requirements',
+                priority: 'Done',
+                status: 'done',
+                assignee: 'EF',
+                project: 'API Integration'
+            }
+        ];
+
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('taskflowUsers', JSON.stringify(userData));
+            localStorage.setItem('taskflowCurrentUser', JSON.stringify(currentUser));
+            localStorage.setItem('taskflowProjects', JSON.stringify(projectsData));
+            localStorage.setItem('taskflowTasks', JSON.stringify(tasksData));
+        }
+
+        // Show/Hide pages
+        function showLogin() {
+            document.getElementById('signUpPage').classList.add('hidden');
+            document.getElementById('loginPage').classList.remove('hidden');
+            document.getElementById('mainApp').classList.add('hidden');
+        }
+
+        function showSignUp() {
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('signUpPage').classList.remove('hidden');
+            document.getElementById('mainApp').classList.add('hidden');
+        }
+
+        // Handle sign up
+        function handleSignUp(event) {
+            event.preventDefault();
+            const form = event.target;
+            const name = form.querySelector('input[type="text"]').value;
+            const email = form.querySelector('input[type="email"]').value;
+            const password = form.querySelector('input[type="password"]').value;
+            const confirmPassword = form.querySelectorAll('input[type="password"]')[1].value;
+
+            if (password !== confirmPassword) {
+                showNotification('Passwords do not match!', 'error');
+                return;
+            }
+
+            if (userData.find(user => user.email === email)) {
+                showNotification('Email already exists!', 'error');
+                return;
+            }
+
+            const newUser = {
+                id: Date.now(),
+                name: name,
+                email: email,
+                password: password,
+                joinDate: new Date().toISOString()
+            };
+
+            userData.push(newUser);
+            currentUser = newUser;
+            saveData();
+            
+            showNotification('Account created successfully!', 'success');
+            setTimeout(() => {
+                document.getElementById('signUpPage').classList.add('hidden');
+                document.getElementById('mainApp').classList.remove('hidden');
+                updateUserInterface();
+            }, 1500);
+        }
+
+        // Handle login
+        function handleLogin(event) {
+            event.preventDefault();
+            const form = event.target;
+            const email = form.querySelector('input[type="email"]').value;
+            const password = form.querySelector('input[type="password"]').value;
+
+            const user = userData.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                saveData();
+                document.getElementById('loginPage').classList.add('hidden');
+                document.getElementById('mainApp').classList.remove('hidden');
+                updateUserInterface();
+                showNotification('Welcome back!', 'success');
+            } else {
+                showNotification('Invalid email or password!', 'error');
+            }
+        }
+
+        // Update user interface with current user data
+        function updateUserInterface() {
+            if (currentUser) {
+                // Update user name in dashboard
+                const welcomeText = document.querySelector('#dashboardPage h2');
+                if (welcomeText) {
+                    welcomeText.textContent = `Welcome back, ${currentUser.name.split(' ')[0]}!`;
+                }
+                
+                // Update user initials in header
+                const userAvatar = document.querySelector('.h-8.w-8.bg-gray-300');
+                if (userAvatar) {
+                    const initials = currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                    userAvatar.querySelector('span').textContent = initials;
+                }
+            }
+            
+            renderProjects();
+            renderTasks();
+        }
+
+        // Navigation
+        function showPage(pageName) {
+            // Hide all pages
+            document.querySelectorAll('.page-content').forEach(page => {
+                page.classList.add('hidden');
+            });
+            
+            // Show selected page
+            document.getElementById(pageName + 'Page').classList.remove('hidden');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600');
+                btn.classList.add('text-gray-500', 'hover:text-gray-700');
+            });
+            
+            event.target.classList.remove('text-gray-500', 'hover:text-gray-700');
+            event.target.classList.add('text-blue-600', 'border-b-2', 'border-blue-600');
+        }
+
+        // Modal functions
+        function openCreateProjectModal() {
+            document.getElementById('createProjectModal').classList.remove('hidden');
+        }
+
+        function closeCreateProjectModal() {
+            document.getElementById('createProjectModal').classList.add('hidden');
+        }
+
+        function openCreateTaskModal() {
+            document.getElementById('createTaskModal').classList.remove('hidden');
+        }
+
+        function closeCreateTaskModal() {
+            document.getElementById('createTaskModal').classList.add('hidden');
+        }
+
+        // Render projects dynamically
+        function renderProjects() {
+            const projectGrid = document.querySelector('#projectsPage .grid');
+            if (!projectGrid) return;
+            
+            projectGrid.innerHTML = '';
+            
+            projectsData.forEach(project => {
+                const projectCard = document.createElement('div');
+                projectCard.className = 'bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow';
+                projectCard.innerHTML = `
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold text-gray-900">${project.name}</h3>
+                            <div class="w-3 h-3 bg-${project.color}-500 rounded-full"></div>
+                        </div>
+                        <p class="text-gray-600 mb-4">${project.description}</p>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex -space-x-2">
+                                ${project.members.map(member => `
+                                    <div class="w-8 h-8 bg-${getRandomColor()}-500 rounded-full flex items-center justify-center text-white text-sm">${member}</div>
+                                `).join('')}
+                            </div>
+                            <span class="text-sm text-gray-600">${project.tasks} tasks</span>
+                        </div>
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm text-gray-600 mb-1">
+                                <span>Progress</span>
+                                <span>${project.progress}%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-${project.color}-600 h-2 rounded-full" style="width: ${project.progress}%"></div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>Due: ${new Date(project.dueDate).toLocaleDateString()}</span>
+                            <span class="text-${project.status === 'On Track' ? 'green' : 'yellow'}-600 font-medium">${project.status}</span>
+                        </div>
+                    </div>
+                `;
+                projectGrid.appendChild(projectCard);
+            });
+        }
+
+        function getRandomColor() {
+            const colors = ['blue', 'green', 'purple', 'red', 'yellow', 'indigo', 'pink', 'teal'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function createProject(event) {
+            event.preventDefault();
+            const form = event.target;
+            const name = form.querySelector('input[type="text"]').value;
+            const description = form.querySelector('textarea').value;
+            const dueDate = form.querySelector('input[type="date"]').value;
+            
+            const newProject = {
+                id: Date.now(),
+                name: name,
+                description: description || 'No description provided',
+                progress: 0,
+                tasks: 0,
+                dueDate: dueDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                status: 'On Track',
+                color: getRandomColor(),
+                members: [currentUser ? currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase() : 'U']
+            };
+            
+            projectsData.push(newProject);
+            saveData();
+            renderProjects();
+            closeCreateProjectModal();
+            showNotification('Project created successfully!', 'success');
+            form.reset();
+        }
+
+        // Render tasks dynamically
+        function renderTasks() {
+            const todoColumn = document.querySelector('#tasksPage .grid > div:nth-child(1) .space-y-3');
+            const inProgressColumn = document.querySelector('#tasksPage .grid > div:nth-child(2) .space-y-3');
+            const doneColumn = document.querySelector('#tasksPage .grid > div:nth-child(3) .space-y-3');
+            
+            if (!todoColumn || !inProgressColumn || !doneColumn) return;
+            
+            // Clear columns
+            todoColumn.innerHTML = '';
+            inProgressColumn.innerHTML = '';
+            doneColumn.innerHTML = '';
+            
+            // Count tasks for each column
+            const todoCount = tasksData.filter(task => task.status === 'todo').length;
+            const inProgressCount = tasksData.filter(task => task.status === 'inprogress').length;
+            const doneCount = tasksData.filter(task => task.status === 'done').length;
+            
+            // Update column headers
+            document.querySelector('#tasksPage .grid > div:nth-child(1) .bg-gray-200').textContent = todoCount;
+            document.querySelector('#tasksPage .grid > div:nth-child(2) .bg-blue-200').textContent = inProgressCount;
+            document.querySelector('#tasksPage .grid > div:nth-child(3) .bg-green-200').textContent = doneCount;
+            
+            tasksData.forEach(task => {
+                const taskCard = document.createElement('div');
+                taskCard.className = `bg-white p-4 rounded-lg shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-shadow ${task.status === 'done' ? 'opacity-75' : ''}`;
+                taskCard.innerHTML = `
+                    <h4 class="font-medium text-gray-900 mb-2">${task.title}</h4>
+                    <p class="text-sm text-gray-600 mb-3">${task.description}</p>
+                    <div class="flex items-center justify-between">
+                        <span class="px-2 py-1 text-xs font-medium bg-${getPriorityColor(task.priority)}-100 text-${getPriorityColor(task.priority)}-800 rounded-full">${task.priority}</span>
+                        <div class="w-6 h-6 bg-${getRandomColor()}-500 rounded-full flex items-center justify-center text-white text-xs">${task.assignee}</div>
+                    </div>
+                `;
+                
+                // Add click handler to move tasks between columns
+                taskCard.addEventListener('click', () => moveTask(task.id));
+                
+                if (task.status === 'todo') {
+                    todoColumn.appendChild(taskCard);
+                } else if (task.status === 'inprogress') {
+                    inProgressColumn.appendChild(taskCard);
+                } else if (task.status === 'done') {
+                    doneColumn.appendChild(taskCard);
+                }
+            });
+        }
+
+        function getPriorityColor(priority) {
+            switch(priority.toLowerCase()) {
+                case 'high': return 'red';
+                case 'medium': return 'yellow';
+                case 'low': return 'green';
+                case 'done': return 'green';
+                default: return 'gray';
+            }
+        }
+
+        function moveTask(taskId) {
+            const task = tasksData.find(t => t.id === taskId);
+            if (!task) return;
+            
+            if (task.status === 'todo') {
+                task.status = 'inprogress';
+            } else if (task.status === 'inprogress') {
+                task.status = 'done';
+                task.priority = 'Done';
+            } else if (task.status === 'done') {
+                task.status = 'todo';
+                task.priority = 'Medium';
+            }
+            
+            saveData();
+            renderTasks();
+            showNotification(`Task moved to ${task.status === 'inprogress' ? 'In Progress' : task.status === 'done' ? 'Done' : 'To Do'}!`, 'success');
+        }
+
+        function createTask(event) {
+            event.preventDefault();
+            const form = event.target;
+            const title = form.querySelector('input[type="text"]').value;
+            const description = form.querySelector('textarea').value;
+            const project = form.querySelector('select').value;
+            const priority = form.querySelectorAll('select')[1].value;
+            
+            const newTask = {
+                id: Date.now(),
+                title: title,
+                description: description || 'No description provided',
+                priority: priority,
+                status: 'todo',
+                assignee: currentUser ? currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase() : 'U',
+                project: project
+            };
+            
+            tasksData.push(newTask);
+            
+            // Update project task count
+            const projectObj = projectsData.find(p => p.name === project);
+            if (projectObj) {
+                projectObj.tasks += 1;
+            }
+            
+            saveData();
+            renderTasks();
+            renderProjects();
+            closeCreateTaskModal();
+            showNotification('Task created successfully!', 'success');
+            form.reset();
+        }
+
+        // Notification system
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 fade-in ${
+                type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+            }`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Update project dropdown in task creation
+        function updateProjectDropdown() {
+            const projectSelect = document.querySelector('#createTaskModal select');
+            if (projectSelect) {
+                projectSelect.innerHTML = '';
+                projectsData.forEach(project => {
+                    const option = document.createElement('option');
+                    option.value = project.name;
+                    option.textContent = project.name;
+                    projectSelect.appendChild(option);
+                });
+            }
+        }
+
+        // Initialize app
+        function initializeApp() {
+            if (currentUser) {
+                document.getElementById('loginPage').classList.add('hidden');
+                document.getElementById('mainApp').classList.remove('hidden');
+                updateUserInterface();
+            }
+            updateProjectDropdown();
+        }
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal-backdrop')) {
+                closeCreateProjectModal();
+                closeCreateTaskModal();
+            }
+        });
+
+        // Initialize the app when page loads
+        document.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98e4c59192a93e57',t:'MTc2MDQyMDczOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
